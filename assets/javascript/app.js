@@ -52,45 +52,48 @@
 
 db.ref().on('value', function(snapshot){
 	var gameChoices = snapshot.val();
+	console.log(gameChoices);
+	
 	 p2db = gameChoices.player2;
 	 p1db = gameChoices.player1;
+
 	 p1Wins = gameChoices.player1Wins;
 	 p1Loses = gameChoices.player1Loses;
 	 p2Wins = gameChoices.player2Wins;
 	 p2loses = gameChoices.player2Loses;
 	 ties = gameChoices.ties;
-	console.log(gameChoices)
-	console.log(p1db);
-	console.log(p2db);
-	gameRun();
+	//gameRun();
 	$('#ties').text(ties);
+	$('#ties1').text(ties);
 	$('#p1Wins').text(p1Wins);
 	$('#p2Loses').text(p2loses);
 	$('#p2Wins').text(p2Wins);
 	$('#p1Loses').text(p1Loses);
 });
 
+db.ref().on('child_changed',function(childSnapshot, player1) {
+	gameRun();
+});
+db.ref().on('child_changed',function(childSnapshot, player2) {
+	gameRun();
+});
+
  function gameRun() {
-  			if(p1db === p2db && p1db != "notChosen" && p2db != "notChosen") {
+ //	if (p1db != "notChosen" && p2db != "notChosen"){
+  			if(p1db === p2db) {
+  				reset();
   				$("#results").text("its a tie");
   				ties++; 
   				db.ref().update({
   					ties: ties,
   				});
   				$('#ties').text(ties);
-  				p2db = "notChosen";
-  	p1db = "notChosen";
-  	db.ref().update({
-  		player2: p2db,
-  	});
-  	db.ref().update({
-  		player1: p1db,
-  	});
+  				$('#ties1').text(ties);
   				
   				
   			} else if(p1db === "rock" && p2db === "scissors"){
 	  			$("#results").text("Player 1 wins rock beats scissors");
-	  			player1Wins();
+	  			play1wins();
 	  			
 	  		} else if (p1db === "rock" && p2db === "paper") {
 	  			$("#results").text("Player 2 wins paper beats rock");
@@ -98,7 +101,7 @@ db.ref().on('value', function(snapshot){
 	  			
 	  		} else if(p1db === "paper" && p2db === "rock"){
 	  			$("#results").text("Player 1 wins paper beats rock");
-	  			player1Wins();
+	  			play1wins();
 	  			
 	  		} else if (p1db === "paper" && p2db === "scissors") {
 	  			$("#results").text("Player 2 wins scissors beats paper");
@@ -106,7 +109,7 @@ db.ref().on('value', function(snapshot){
 	  			
 	  		} else if(p1db === "scissors" && p2db === "paper"){
 	  			$("#results").text("Player 1 wins scissors beats paper");
-	  			player1Wins();
+	  			play1wins();
 	  			
 	  		} else if(p1db === "scissors" && p2db === "rock") {
 	  			$("#results").text("Player 2 wins rock beats scissors");
@@ -116,8 +119,18 @@ db.ref().on('value', function(snapshot){
 	  			$("#results").text("other player hasn't chosen yet");
 	  		}
   }
+//}
+  function reset() { 
+    p2db = "notChosen";
+  	p1db = "notChosen1";
+  	db.ref().update({
+  		player2: p2db,
+  		player1: p1db,
+  	});
+  }
 
 function play1wins () {
+	  reset(); 
 	  p1Wins++;
 	  p2loses++;
 	  db.ref().update({
@@ -125,9 +138,10 @@ function play1wins () {
   		player2Loses: p2loses,
   	});
 	$('#p1Wins').text(p1Wins);
-	$('#p2Loses').text(p2Loses);
+	$('#p2Loses').text(p2loses);
 }
 function play2wins () {
+	  reset();
 	  p2Wins++;
 	  p1Loses++;
 	  db.ref().update({
@@ -136,9 +150,10 @@ function play2wins () {
   	});
 	$('#p2Wins').text(p2Wins);
 	$('#p1Loses').text(p1Loses);
+	;
 }
 
- $('#reset').on('click', function(){
+ /*$('#reset').on('click', function(){
   	p2db = "notChosen";
   	p1db = "notChosen";
   	db.ref().update({
@@ -147,7 +162,9 @@ function play2wins () {
   	db.ref().update({
   		player1: p1db,
   	});
-  });
+  });*/
+
+
  $('#resetScore').on('click', function(){
   	p1Wins = 0;
   	p1Loses = 0;
