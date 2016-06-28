@@ -40,6 +40,7 @@
   	})
   	return false; 
   	gameRun();
+
   });
 
  
@@ -49,32 +50,51 @@ db.ref().on('value', function(snapshot){
 	 p2db = gameChoices.player2;
 	 p1db = gameChoices.player1;
 	console.log(gameChoices)
+	console.log(p1db);
+	console.log(p2db);
+	gameRun();
 	
 });
 
  function gameRun() {
-  	if(p1db != "notChosen" && p2db != "notChosen"){
-  		if(p1db === p2db) {
-  			$("#results").text("its a tie");
-	  		if(p1db === "rock" && p2db === "scissors"){
-	  			$("#results").text("Player 1 wins");
+  			if(p1db === p2db && p1db != "notChosen" && p2db != "notChosen") {
+  				$("#results").text("its a tie");
+  				
+  			} else if(p1db === "rock" && p2db === "scissors"){
+	  			$("#results").text("Player 1 wins rock beats scissors");
+	  			
+	  		} else if (p1db === "rock" && p2db === "paper") {
+	  			$("#results").text("Player 2 wins paper beats rock");
+	  			
+	  		} else if(p1db === "paper" && p2db === "rock"){
+	  			$("#results").text("Player 1 wins paper beats rock");
+	  			
+	  		} else if (p1db === "paper" && p2db === "scissors") {
+	  			$("#results").text("Player 2 wins scissors beats paper");
+	  			
+	  		} else if(p1db === "scissors" && p2db === "paper"){
+	  			$("#results").text("Player 1 wins scissors beats paper");
+	  			
+	  		} else if(p1db === "scissors" && p2db === "rock") {
+	  			$("#results").text("Player 2 wins rock beats scissors");
+	  			
 	  		} else {
-	  			$("#results").text("Player 2 wins");
+	  			$("#results").text("other player hasn't chosen yet");
 	  		}
-	  		if(p1db === "paper" && p2db === "rock"){
-	  			$("#results").text("Player 1 wins");
-	  		} else {
-	  			$("#results").text("Player 2 wins");
-	  		}
-	  		if(p1db === "scissors" && p2db === "paper"){
-	  			$("#results").text("Player 1 wins");
-	  		} else {
-	  			$("#results").text("Player 2 wins");
-	  		}
-  		}  
-  	}
-
   }
+
+ $('#reset').on('click', function(){
+  	p2 = "notChosen";
+  	p1 = "notChosen";
+  	db.ref().update({
+  		player2: p2,
+  	});
+  	db.ref().update({
+  		player1: p1,
+  	});
+  });
+
+
   $(document).ready(function(){
   	$('#p1choice').hide();
   	$('#p2choice').hide();
