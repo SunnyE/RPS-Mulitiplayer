@@ -62,24 +62,17 @@ db.ref().on('value', function(snapshot){
 	 p2Wins = gameChoices.player2Wins;
 	 p2loses = gameChoices.player2Loses;
 	 ties = gameChoices.ties;
-	//gameRun();
-	$('#ties').text(ties);
-	$('#ties1').text(ties);
-	$('#p1Wins').text(p1Wins);
-	$('#p2Loses').text(p2loses);
-	$('#p2Wins').text(p2Wins);
-	$('#p1Loses').text(p1Loses);
-});
-
-db.ref().on('child_changed',function(childSnapshot, player1) {
 	gameRun();
-});
-db.ref().on('child_changed',function(childSnapshot, player2) {
-	gameRun();
+	$('#ties').text("Ties: " + ties);
+  	$('#ties1').text("Ties: " + ties);
+	$('#p1Wins').text("wins: " + p1Wins);
+	$('#p2Loses').text("Loses: " + p2loses);
+	$('#p2Wins').text("wins: " + p2Wins);
+	$('#p1Loses').text("Loses: " + p1Loses);
 });
 
  function gameRun() {
- //	if (p1db != "notChosen" && p2db != "notChosen"){
+
   			if(p1db === p2db) {
   				reset();
   				$("#results").text("its a tie");
@@ -87,8 +80,8 @@ db.ref().on('child_changed',function(childSnapshot, player2) {
   				db.ref().update({
   					ties: ties,
   				});
-  				$('#ties').text(ties);
-  				$('#ties1').text(ties);
+  				$('#ties').text("Ties: " + ties);
+  				$('#ties1').text("Ties: " + ties);
   				
   				
   			} else if(p1db === "rock" && p2db === "scissors"){
@@ -116,10 +109,10 @@ db.ref().on('child_changed',function(childSnapshot, player2) {
 	  			play2wins();
 	  			
 	  		} else {
-	  			$("#results").text("other player hasn't chosen yet");
+	  			//$("#results").text("other player hasn't chosen yet");
 	  		}
   }
-//}
+
   function reset() { 
     p2db = "notChosen";
   	p1db = "notChosen1";
@@ -137,8 +130,8 @@ function play1wins () {
   		player1Wins: p1Wins,
   		player2Loses: p2loses,
   	});
-	$('#p1Wins').text(p1Wins);
-	$('#p2Loses').text(p2loses);
+	$('#p1Wins').text("wins: " + p1Wins);
+	$('#p2Loses').text("Loses: " + p2loses);
 }
 function play2wins () {
 	  reset();
@@ -148,21 +141,12 @@ function play2wins () {
   		player2Wins: p2Wins,
   		player1Loses: p1Loses,
   	});
-	$('#p2Wins').text(p2Wins);
-	$('#p1Loses').text(p1Loses);
+	$('#p2Wins').text("wins: " + p2Wins);
+	$('#p1Loses').text("Loses: " + p1Loses);
 	;
 }
 
- /*$('#reset').on('click', function(){
-  	p2db = "notChosen";
-  	p1db = "notChosen";
-  	db.ref().update({
-  		player2: p2db,
-  	});
-  	db.ref().update({
-  		player1: p1db,
-  	});
-  });*/
+
 
 
  $('#resetScore').on('click', function(){
@@ -185,6 +169,6 @@ function play2wins () {
   	$('#p2choice').hide();
   	$('#p1Results').hide();
   	$('#p2Results').hide();
-  	reset();
+  	//reset();
 
   });
