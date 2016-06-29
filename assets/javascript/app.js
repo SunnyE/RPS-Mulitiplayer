@@ -111,6 +111,17 @@ db.ref().on('value', function(snapshot){
 	  		} else {
 	  			//$("#results").text("other player hasn't chosen yet");
 	  		}
+
+	  		if(p1db ==="rock" || p1db ==="paper" || p1db ==="scissor" ){
+	  			$(".p1choice").hide();
+	  		} else if(p1db === "notChosen1"){
+	  			$(".p1choice").show();
+	  		}
+	  		if(p2db ==="rock" || p2db ==="paper" || p2db ==="scissor" ){
+	  			$(".p2choice").hide();
+	  		} else if(p1db === "notChosen1"){
+	  			$(".p2choice").show();
+	  		}
   }
 
   function reset() { 
@@ -145,7 +156,6 @@ function play2wins () {
 	$('#p1Loses').text("Loses: " + p1Loses);
 	;
 }
-
 
 
 
